@@ -1,59 +1,74 @@
-# NpsApp
+# Omega — cliente NPS (Angular 20 · DEV-001)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+SPA standalone para consumir la API del ejercicio NPS. Repo hermano del backend (mismo caso DEV-001): levantá la API antes o las peticiones fallarán por red.
 
-## Development server
+**Autor:** [Yeferson Segura](https://yefersonsegura.com/)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## Requisitos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js **LTS** (compatible con Angular 20; típ. 20.x u 22.x)
+- Backend NPS ejecutándose según ese repo (`https://localhost:7070` o `http://localhost:5140` según perfil HTTPS/HTTP).
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalación y desarrollo
 
 ```bash
-ng generate component component-name
+npm install
+npm start
+# equivale a ng serve → http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
+
+## Cliente Omega (Angular)
+
+**Omega** aquí es el **Angular 20** del DEV-001, hecho por mí. La misma línea **Omega** la llevo a **Flutter** como arquitectura; **[AbeyJS](https://abeyjs-fm.github.io/AbeyJS/)** sigue en paralelo (documentación en ese sitio).
+
+Instalación y `ng serve` en este directorio (`npsApp`). Para que cargue datos, **antes tiene que existir esta API**.
+
+`environment.development.ts`: **`apiUrl`** es solo el **origen** (`https://localhost:7070` o `http://localhost:5140`), **sin** sufijo `/api`. Las rutas relativas están centralizadas en `src/app/core/api/api-paths.ts`.
+
+### HTTP que realmente llamamos
+
+| Acción | Método | Ruta (tras `apiUrl`) | Body | Authorization |
+|--------|--------|----------------------|------|----------------|
+| Login | POST | `api/Auth/Login` | `username`, `password` | Ninguna |
+| Refresh | POST | `api/Auth/refresh` | `token`, `refreshToken` | Ninguna |
+| Voto | POST | `api/Survey/vote` | `score` (0–10) | Bearer; rol `2` (votante) |
+| NPS | GET | `api/Admin/results` | — | Bearer; rol `1` (admin) |
+
+ASP.NET resuelve rutas sin pelearse por mayúsculas; en el front dejé los paths alineados con los nombres de controlador.
+
+**Roles:** en BD y en `Authorize(Roles = "1"|"2")` son strings. El Angular lee el claim de rol (incluida la URI larga de `ClaimTypes.Role` por si el token la trae así).
+
+**SPA:** `/login` público; `/home/dashboard` admin; `/home/vote` votante; `/home` redirige según rol. **Interceptor:** adjunta JWT y, ante `401`, intenta refresh una vez con `HttpBackend` para no enredar con el propio interceptor.
+
+---
+
+## Mapa rápido del código
+
+- `src/app/features/auth/` — login y `AuthService` (idle ~5 min + refresh programado).
+- `src/app/features/nps/vote/` y `features/nps/results/` — voto y dashboard.
+- `src/app/core/guards/auth.guards.ts` — `authGuard`, `adminGuard`, `voterGuard`.
+- `src/app/common/http/auth-interceptor.fn.ts` — Bearer + refresh.
+
+## Build de producción
 
 ```bash
-ng generate --help
+npx ng build --configuration production
 ```
 
-## Building
+Salida en `dist/npsApp/`.
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Tests unitarios (Karma)
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## Recursos Angular CLI
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Scaffolding y referencia de comandos: [Angular CLI](https://angular.dev/tools/cli).
