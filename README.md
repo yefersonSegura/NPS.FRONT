@@ -23,7 +23,13 @@ npm start
 
 ## Cliente Omega (Angular)
 
-**Omega** aquí es el **Angular 20** del DEV-001, hecho por mí. La misma línea **Omega** la llevo a **Flutter** como arquitectura; **[AbeyJS](https://abeyjs-fm.github.io/AbeyJS/)** sigue en paralelo (documentación en ese sitio).
+**Omega** aquí es el **Angular 20** del DEV-001, **hecho por mí**. Este repo describe **solo este cliente web**: rutas SPA, HTTPS hacia la API, auth y tema NPS.
+
+## Más de mi lado (contexto; no forma parte del código que corre esta SPA)
+
+Implementé **Omega Architecture para Flutter** como enfoque de estructura de proyecto y flujos Dart. Además trabajo en **[AbeyJS](https://abeyjs-fm.github.io/AbeyJS/)** (documentación oficial), framework todavía **en fase experimental** (interfaces y compatibilidad pueden cambiar hasta que lo estabilice).
+
+---
 
 Instalación y `ng serve` en este directorio (`npsApp`). Para que cargue datos, **antes tiene que existir esta API**.
 
