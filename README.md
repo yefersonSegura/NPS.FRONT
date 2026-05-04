@@ -1,6 +1,13 @@
 # Omega — cliente NPS (Angular 20 · DEV-001)
 
-SPA standalone para consumir la API del ejercicio NPS. Repo hermano del backend (mismo caso DEV-001): levantá la API antes o las peticiones fallarán por red.
+SPA standalone para consumir la API del mismo ejercicio NPS (**DEV-001**): **levantá el back antes** o las peticiones fallarán por red.
+
+| Repo | GitHub |
+|------|--------|
+| **Este front (Omega, Angular)** | [github.com/yefersonSegura/NPS.FRONT](https://github.com/yefersonSegura/NPS.FRONT) |
+| **API / back (.NET 10)** | [github.com/yefersonSegura/NPS.API](https://github.com/yefersonSegura/NPS.API) |
+
+Clone el back, ejecutá los scripts SQL, configurá la cadena y `dotnet run` según **su** README.
 
 **Autor:** [Yeferson Segura](https://yefersonsegura.com/)
 
@@ -9,7 +16,7 @@ SPA standalone para consumir la API del ejercicio NPS. Repo hermano del backend 
 ## Requisitos
 
 - Node.js **LTS** (compatible con Angular 20; típ. 20.x u 22.x)
-- Backend NPS ejecutándose según ese repo (`https://localhost:7070` o `http://localhost:5140` según perfil HTTPS/HTTP).
+- Backend **NPS.API** corrido localmente (`https://localhost:7070` o `http://localhost:5140` según el perfil `launchSettings`; ver repo del API).
 
 ## Instalación y desarrollo
 
