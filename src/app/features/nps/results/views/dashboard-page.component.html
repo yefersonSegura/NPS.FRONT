@@ -1,0 +1,49 @@
+<div class="page-inner">
+  <header class="page-header">
+    <div>
+      <h1>Omega — Dashboard NPS</h1>
+      <p class="sub">Índice NPS consolidado para administradores</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="refresh()" [disabled]="loading()">
+      {{ loading() ? 'Cargando…' : 'Actualizar' }}
+    </button>
+  </header>
+
+  @if (loading() && !data()) {
+    <div class="loader-bar" aria-busy="true" role="progressbar"><span>Cargando resultados…</span></div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-error" role="alert">{{ error() }}</div>
+  }
+
+  @if (data(); as d) {
+    @if (d.totalResponses === 0) {
+      <p class="hint empty-hint">No hay respuestas aún (o se vació la tabla). Los valores mostrados son cero.</p>
+    }
+    <div class="metrics-grid">
+      <div class="metric-card accent">
+        <div class="label">NPS</div>
+        <div class="value">{{ d.npsScore }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Promotores %</div>
+        <div class="value">{{ d.promotersPercentage }}%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Neutros %</div>
+        <div class="value">{{ d.passivesPercentage }}%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Detractores %</div>
+        <div class="value">{{ d.detractorsPercentage }}%</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Total respuestas</div>
+        <div class="value">{{ d.totalResponses }}</div>
+      </div>
+    </div>
+  } @else if (!loading() && !error()) {
+    <p class="hint">Sin datos cargados.</p>
+  }
+</div>

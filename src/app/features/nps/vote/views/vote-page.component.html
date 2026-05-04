@@ -1,0 +1,60 @@
+<div class="nps-survey-root">
+  <div class="nps-card">
+    <p class="nps-kicker">Omega — Encuesta de satisfacción</p>
+    <h1 class="nps-headline">
+      ¿Qué tan probable es que recomiende nuestro servicio a un familiar o amigo?
+    </h1>
+    <p class="nps-hint">Selecciona una calificación del 0 al 10; el cliente llama <span class="mono">POST api/Survey/vote</span>.</p>
+
+    @if (alreadyVoted()) {
+      <div class="alert alert-warn" role="status"><strong>Ya votaste.</strong> No puedes votar de nuevo.</div>
+    }
+
+    @if (okMessage()) {
+      <div class="alert alert-ok" role="status">{{ okMessage() }}</div>
+    }
+
+    @if (error()) {
+      <div class="alert alert-error" role="alert">{{ error() }}</div>
+    }
+
+    @if (submitting()) {
+      <div class="inline-loader">Enviando voto…</div>
+    }
+
+    <div class="nps-scale-scroll">
+      <div class="nps-scale" role="group" aria-label="Calificación del 0 al 10">
+        @for (n of scale; track n) {
+          <button
+            type="button"
+            [class]="'nps-score-btn ' + tierClass(n)"
+            [attr.aria-pressed]="score() === n"
+            [disabled]="voteLocked()"
+            [attr.aria-label]="'Puntuación ' + n"
+            (click)="selectScore(n)"
+          >
+            {{ n }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="nps-caption-row">
+      <span class="nps-caption caption-detractor">Muy improbable</span>
+      <span class="nps-caption caption-passive">Neutral</span>
+      <span class="nps-caption caption-promoter">Definitivamente lo recomendaría</span>
+    </div>
+
+    <div class="nps-submit-wrap">
+      <button
+        type="button"
+        class="nps-submit"
+        [disabled]="score() === null || submitting() || voteLocked()"
+        (click)="submitVote()"
+      >
+        {{ submitting() ? 'Enviando…' : 'Enviar mi calificación' }}
+      </button>
+      <p class="nps-fine-note">Después de enviar, la encuesta queda bloqueada en esta pantalla.</p>
+    </div>
+  </div>
+</div>
